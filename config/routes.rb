@@ -7,7 +7,11 @@ Rails.application.routes.draw do
       delete '/merchants/:id', to: 'merchants#destroy'
       get    '/merchants/:id', to: 'merchants#show'
 
-      get    '/items', to: 'items#index'
+      get    '/items',     to: 'items#index'
+      post   '/items',     to: 'items#create'
+      patch  '/items/:id', to: 'items#update'
+      delete '/items/:id', to: 'items#destroy'
+      get    '/items/:id', to: 'items#show'
     end
   end
 end
