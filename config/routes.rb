@@ -5,12 +5,12 @@ Rails.application.routes.draw do
       resources :merchants, except: [:new, :edit]
       resources :items, except: [:new, :edit]
 
-      namespace :items do
-        get '/:id/merchant', to: 'merchant#show'
-      end
-
       namespace :merchants do
         get '/:id/items', to: 'items#index'
+      end
+
+      namespace :items do
+        get '/:id/merchant', to: 'merchant#show'
       end
     end
   end
