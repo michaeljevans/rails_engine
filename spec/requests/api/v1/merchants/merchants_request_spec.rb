@@ -9,22 +9,31 @@ RSpec.describe 'Merchants API' do
     expect(response).to be_successful
     expect(response.content_type).to eq('application/json')
 
-    merchants = JSON.parse(response.body, symbolize_names: true)
+    merchants_response = JSON.parse(response.body, symbolize_names: true)
 
-    expect(merchants.length).to eq(6)
+    expect(merchants_response.class).to eq(Hash)
+    expect(merchants_response[:data].length).to eq(6)
+    expect(merchants_response[:data].first).to have_key(:id)
+    expect(merchants_response[:data].first).to have_key(:type)
+    expect(merchants_response[:data].first).to have_key(:attributes)
+    expect(merchants_response[:data].first[:attributes]).to have_key(:name)
   end
 
   it 'returns one merchant by its id' do
-    id = create(:merchant).id
+    merchant = create(:merchant)
+    id = merchant.id
 
     get "/api/v1/merchants/#{id}"
 
     expect(response).to be_successful
     expect(response.content_type).to eq('application/json')
 
-    merchant = JSON.parse(response.body, symbolize_names: true)
+    merchant_response = JSON.parse(response.body, symbolize_names: true)
 
-    expect(merchant[:id]).to eq(id)
+    expect(merchant_response.class).to eq(Hash)
+    expect(merchant_response[:data][:id]).to eq("#{id}")
+    expect(merchant_response[:data][:type]).to eq('merchant')
+    expect(merchant_response[:data][:attributes][:name]).to eq(merchant.name)
   end
 
   it 'can create a new merchant' do
@@ -38,9 +47,14 @@ RSpec.describe 'Merchants API' do
     expect(response).to be_successful
     expect(response.content_type).to eq('application/json')
 
+    merchant_response = JSON.parse(response.body, symbolize_names: true)
+
     merchant = Merchant.last
 
-    expect(merchant.name).to eq(merchant_params[:name])
+    expect(merchant_response.class).to eq(Hash)
+    expect(merchant_response[:data][:id]).to eq("#{merchant.id}")
+    expect(merchant_response[:data][:type]).to eq('merchant')
+    expect(merchant_response[:data][:attributes][:name]).to eq(merchant.name)
   end
 
   it 'can update an existing merchant' do
@@ -57,7 +71,14 @@ RSpec.describe 'Merchants API' do
     expect(response).to be_successful
     expect(response.content_type).to eq('application/json')
 
+    merchant_response = JSON.parse(response.body, symbolize_names: true)
+
     merchant = Merchant.find_by(id: id)
+
+    expect(merchant_response.class).to eq(Hash)
+    expect(merchant_response[:data][:id]).to eq("#{id}")
+    expect(merchant_response[:data][:type]).to eq('merchant')
+    expect(merchant_response[:data][:attributes][:name]).to eq(merchant_params[:name])
 
     expect(merchant.name).to_not eq(old_name)
     expect(merchant.name).to eq(merchant_params[:name])
@@ -71,6 +92,14 @@ RSpec.describe 'Merchants API' do
     expect{ delete "/api/v1/merchants/#{merchant.id}" }.to change(Merchant, :count).by(-1)
 
     expect(response).to be_successful
+    expect(response.content_type).to eq('application/json')
+
+    merchant_response = JSON.parse(response.body, symbolize_names: true)
+
+    expect(merchant_response.class).to eq(Hash)
+    expect(merchant_response[:data][:id]).to eq("#{merchant.id}")
+    expect(merchant_response[:data][:type]).to eq('merchant')
+    expect(merchant_response[:data][:attributes][:name]).to eq(merchant.name)
 
     expect(Merchant.count).to eq(0)
     expect{ Merchant.find(merchant.id) }.to raise_error(ActiveRecord::RecordNotFound)
