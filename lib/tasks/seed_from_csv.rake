@@ -22,7 +22,14 @@ namespace :db do
         object.create!(row.to_hash)
       end
       puts "#{object}s successfully seeded!"
-      ActiveRecord::Base.connection.reset_pk_sequence!("#{object}")
     end
   end
+
+  task reset_keys: :environment do
+    ActiveRecord::Base.connection.tables.each do |t|
+      ActiveRecord::Base.connection.reset_pk_sequence!(t)
+    end
+  end
+
+  task reseed: [:seed_from_csv, :reset_keys]
 end
