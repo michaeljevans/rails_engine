@@ -28,8 +28,8 @@ RSpec.describe 'Merchants API' do
   end
 
   it 'can create a new merchant' do
-    merchant_params = { name: Faker::Company.name }
     headers = { 'CONTENT_TYPE': 'application/json' }
+    merchant_params = { name: Faker::Company.name }
 
     post '/api/v1/merchants',
       headers: headers,
@@ -45,9 +45,10 @@ RSpec.describe 'Merchants API' do
 
   it 'can update an existing merchant' do
     id = create(:merchant).id
-    name = Merchant.last.name
-    merchant_params = { name: 'Jabroni' }
+    old_name = Merchant.last.name
+
     headers = { 'CONTENT_TYPE': 'application/json' }
+    merchant_params = { name: 'Jabroni' }
 
     patch "/api/v1/merchants/#{id}",
       headers: headers,
@@ -58,8 +59,8 @@ RSpec.describe 'Merchants API' do
 
     merchant = Merchant.find_by(id: id)
 
-    expect(merchant.name).to_not eq(name)
-    expect(merchant.name).to eq('Jabroni')
+    expect(merchant.name).to_not eq(old_name)
+    expect(merchant.name).to eq(merchant_params[:name])
   end
 
   it 'can destroy an existing merchant' do
