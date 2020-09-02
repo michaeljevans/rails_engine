@@ -54,7 +54,7 @@ RSpec.describe 'Items API' do
 
     post '/api/v1/items',
       headers: headers,
-      params: JSON.generate({ item: item_params })
+      params: JSON.generate(item_params)
 
     expect(response).to be_successful
     expect(response.content_type).to eq('application/json')
@@ -91,7 +91,7 @@ RSpec.describe 'Items API' do
 
     patch "/api/v1/items/#{id}",
       headers: headers,
-      params: JSON.generate({ item: item_params })
+      params: JSON.generate(item_params)
 
     expect(response).to be_successful
     expect(response.content_type).to eq('application/json')
@@ -127,17 +127,7 @@ RSpec.describe 'Items API' do
     expect{ delete "/api/v1/items/#{item.id}" }.to change(Item, :count).by(-1)
 
     expect(response).to be_successful
-    expect(response.content_type).to eq('application/json')
-
-    item_response = JSON.parse(response.body, symbolize_names: true)
-
-    expect(item_response.class).to eq(Hash)
-    expect(item_response[:data][:id]).to eq("#{item.id}")
-    expect(item_response[:data][:type]).to eq('item')
-    expect(item_response[:data][:attributes][:name]).to eq(item.name)
-    expect(item_response[:data][:attributes][:description]).to eq(item.description)
-    expect(item_response[:data][:attributes][:unit_price]).to eq(item.unit_price)
-    expect(item_response[:data][:attributes][:merchant_id]).to eq(item.merchant_id)
+    expect(response.status).to eq(204)
 
     expect(Item.count).to eq(0)
     expect{ Item.find(item.id) }.to raise_error(ActiveRecord::RecordNotFound)

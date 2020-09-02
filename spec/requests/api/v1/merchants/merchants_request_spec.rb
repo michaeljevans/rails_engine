@@ -42,7 +42,7 @@ RSpec.describe 'Merchants API' do
 
     post '/api/v1/merchants',
       headers: headers,
-      params: JSON.generate({ merchant: merchant_params })
+      params: JSON.generate(merchant_params)
 
     expect(response).to be_successful
     expect(response.content_type).to eq('application/json')
@@ -66,7 +66,7 @@ RSpec.describe 'Merchants API' do
 
     patch "/api/v1/merchants/#{id}",
       headers: headers,
-      params: JSON.generate({ merchant: merchant_params })
+      params: JSON.generate(merchant_params)
 
     expect(response).to be_successful
     expect(response.content_type).to eq('application/json')
@@ -92,14 +92,7 @@ RSpec.describe 'Merchants API' do
     expect{ delete "/api/v1/merchants/#{merchant.id}" }.to change(Merchant, :count).by(-1)
 
     expect(response).to be_successful
-    expect(response.content_type).to eq('application/json')
-
-    merchant_response = JSON.parse(response.body, symbolize_names: true)
-
-    expect(merchant_response.class).to eq(Hash)
-    expect(merchant_response[:data][:id]).to eq("#{merchant.id}")
-    expect(merchant_response[:data][:type]).to eq('merchant')
-    expect(merchant_response[:data][:attributes][:name]).to eq(merchant.name)
+    expect(response.status).to eq(204)
 
     expect(Merchant.count).to eq(0)
     expect{ Merchant.find(merchant.id) }.to raise_error(ActiveRecord::RecordNotFound)
