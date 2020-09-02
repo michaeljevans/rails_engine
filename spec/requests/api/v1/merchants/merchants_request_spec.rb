@@ -26,4 +26,20 @@ RSpec.describe 'Merchants API' do
 
     expect(merchant[:id]).to eq(id)
   end
+
+  it 'can create a new merchant' do
+    merchant_params = { name: Faker::Company.name }
+    headers = { 'CONTENT_TYPE' => 'application/json' }
+
+    post '/api/v1/merchants',
+      headers: headers,
+      params: JSON.generate({ merchant: merchant_params })
+
+    expect(response).to be_successful
+    expect(response.content_type).to eq('application/json')
+
+    merchant = Merchant.last
+
+    expect(merchant.name).to eq(merchant_params[:name])
+  end
 end
