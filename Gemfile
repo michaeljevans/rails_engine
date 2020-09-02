@@ -34,6 +34,8 @@ gem 'nyan-cat-formatter'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry'
+  gem 'faker'
+  gem 'factory_bot_rails'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 end
 
@@ -42,6 +44,7 @@ group :development do
 end
 
 group :test do
+  gem 'factory'
   gem 'capybara'
   gem 'simplecov'
   gem 'rspec-rails'
