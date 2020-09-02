@@ -1,20 +1,17 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
+
       resources :merchants, except: [:new, :edit]
       resources :items, except: [:new, :edit]
 
-      # get    '/merchants',     to: 'merchants#index'
-      # post   '/merchants',     to: 'merchants#create'
-      # patch  '/merchants/:id', to: 'merchants#update'
-      # delete '/merchants/:id', to: 'merchants#destroy'
-      # get    '/merchants/:id', to: 'merchants#show'
+      namespace :items do
+        get '/:id/merchant', to: 'merchant#show'
+      end
 
-      # get    '/items',     to: 'items#index'
-      # post   '/items',     to: 'items#create'
-      # patch  '/items/:id', to: 'items#update'
-      # delete '/items/:id', to: 'items#destroy'
-      # get    '/items/:id', to: 'items#show'
+      namespace :merchants do
+        get '/:id/items', to: 'items#index'
+      end
     end
   end
 end
