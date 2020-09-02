@@ -73,12 +73,12 @@ RSpec.describe 'Merchants API' do
 
     merchant_response = JSON.parse(response.body, symbolize_names: true)
 
-    merchant = Merchant.find_by(id: id)
-
     expect(merchant_response.class).to eq(Hash)
     expect(merchant_response[:data][:id]).to eq("#{id}")
     expect(merchant_response[:data][:type]).to eq('merchant')
     expect(merchant_response[:data][:attributes][:name]).to eq(merchant_params[:name])
+
+    merchant = Merchant.find_by(id: id)
 
     expect(merchant.name).to_not eq(old_name)
     expect(merchant.name).to eq(merchant_params[:name])
