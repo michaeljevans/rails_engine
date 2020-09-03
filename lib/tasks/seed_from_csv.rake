@@ -2,7 +2,7 @@ require 'csv'
 
 desc 'Import CSV data'
 namespace :db do
-  task :seed_from_csv => [:environment] do
+  task :import_csv_data => [:environment] do
     Rake::Task['db:drop'].execute
     Rake::Task['db:create'].execute
     Rake::Task['db:migrate'].execute
@@ -31,5 +31,5 @@ namespace :db do
     end
   end
 
-  task reseed: [:seed_from_csv, :reset_keys]
+  task seed_from_csv: [:import_csv_data, :reset_keys]
 end
