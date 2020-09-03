@@ -30,10 +30,10 @@ RSpec.describe 'Items API' do
   end
 
   it 'can return an item based on name search' do
-    create_list(:item, 9)
+    create_list(:item, 4)
     item = Item.last
 
-    get "/api/v1/items/find?name=#{item.name[3..9]}"
+    get "/api/v1/items/find?name=#{item.name[3..12]}"
 
     expect(response).to be_successful
     expect(response.content_type).to eq('application/json')
@@ -58,10 +58,10 @@ RSpec.describe 'Items API' do
   end
 
   it 'can return an item based on description search' do
-    create_list(:item, 9)
+    create_list(:item, 4)
     item = Item.last
 
-    get "/api/v1/items/find?description=#{item.description[3..9]}"
+    get "/api/v1/items/find?description=#{item.description[3..12]}"
 
     expect(response).to be_successful
     expect(response.content_type).to eq('application/json')
