@@ -3,6 +3,10 @@ class Api::V1::Merchants::SearchController < ApplicationController
     render json: MerchantSerializer.new(Merchant.find_merchant(search_param))
   end
 
+  def index
+    render json: MerchantSerializer.new(Merchant.find_merchants(search_param))
+  end
+
   private
 
   def search_param
