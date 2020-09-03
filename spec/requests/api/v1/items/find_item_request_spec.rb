@@ -33,7 +33,7 @@ RSpec.describe 'Items API' do
     create_list(:item, 4)
     item = Item.last
 
-    get "/api/v1/items/find?name=#{item.name[3..12]}"
+    get "/api/v1/items/find?name=#{item.name}"
 
     expect(response).to be_successful
     expect(response.content_type).to eq('application/json')
@@ -61,7 +61,7 @@ RSpec.describe 'Items API' do
     create_list(:item, 4)
     item = Item.last
 
-    get "/api/v1/items/find?description=#{item.description[3..12]}"
+    get "/api/v1/items/find?description=#{item.description}"
 
     expect(response).to be_successful
     expect(response.content_type).to eq('application/json')

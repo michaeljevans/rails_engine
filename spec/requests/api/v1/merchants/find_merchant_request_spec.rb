@@ -27,7 +27,7 @@ RSpec.describe 'Merchants API' do
     create_list(:merchant, 4)
     merchant = Merchant.last
 
-    get "/api/v1/merchants/find?name=#{merchant.name[1..9]}"
+    get "/api/v1/merchants/find?name=#{merchant.name}"
 
     expect(response).to be_successful
     expect(response.content_type).to eq('application/json')
