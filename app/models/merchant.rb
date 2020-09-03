@@ -3,6 +3,8 @@ class Merchant < ApplicationRecord
 
   has_many :items, dependent: :destroy
   has_many :invoices, dependent: :destroy
+  has_many :invoice_items, through: :invoices
+  has_many :transactions, through: :invoices
 
   scope :by_id, -> (value) { where(id: value) }
   scope :by_name, -> (value) { where('lower(name) like ?', "%#{value.downcase}%") }
@@ -30,5 +32,14 @@ class Merchant < ApplicationRecord
     else
       by_date(attribute, value)
     end
+  end
+
+  def self.highest_revenues(num_merchants)
+    joins(invoices: [:invoice_items, :transactions])
+      .select('merchants.*, SUM(invoice_items.quantity * invoice_items.unit_price) AS total_revenue')
+      .where("transactions.result='success' AND invoices.status='shipped'")
+      .group(:id)
+      .order('total_revenue DESC')
+      .limit(num_merchants)
   end
 end
