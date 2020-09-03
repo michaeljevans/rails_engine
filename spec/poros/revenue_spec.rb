@@ -5,7 +5,6 @@ RSpec.describe Revenue do
     rev = Revenue.new(283.23)
 
     expect(rev).to be_a(Revenue)
-    expect(rev.id).to eq(nil)
     expect(rev.revenue).to eq(283.23)
   end
 end
