@@ -1,8 +1,7 @@
 class Revenue
-  attr_reader :id, :revenue
+  attr_reader :revenue
 
   def initialize(total)
-    @id    = nil
     @revenue = total
   end
 end
