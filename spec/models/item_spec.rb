@@ -20,7 +20,7 @@ RSpec.describe Item do
       item2 = Item.create(name: 'fishing pole', description: "anglin'", unit_price: 99.25, merchant_id: merchant.id)
 
       merchant2 = Merchant.create(name: 'Outdoor Goods')
-      item3 = Item.create(name: 'hiking boots', description: 'long walks', unit_price: 120.21, merchant_id: merchant2.id)
+      item3 = Item.create(name: 'hiking boots', description: 'for long walks', unit_price: 120.21, merchant_id: merchant2.id)
 
       expect(Item.find_item(id: item.id)).to eq(item)
       expect(Item.find_item(name: 'g po')).to eq(item2)
@@ -29,6 +29,24 @@ RSpec.describe Item do
       expect(Item.find_item(merchant_id: merchant2.id)).to eq(item3)
       expect(Item.find_item(created_at: item.created_at.to_s)).to eq(item)
       expect(Item.find_item(updated_at: item.updated_at.to_s)).to eq(item)
+    end
+
+    it '.find_items(search_param)' do
+      merchant = Merchant.create(name: 'REI')
+      item = Item.create(name: 'tent', description: 'for sleeping outside', unit_price: 87.91, merchant_id: merchant.id)
+      item2 = Item.create(name: 'fishing pole', description: "anglin'", unit_price: 99.25, merchant_id: merchant.id)
+
+      merchant2 = Merchant.create(name: 'Outdoor Goods')
+      item3 = Item.create(name: 'hiking boots', description: 'long walks', unit_price: 120.21, merchant_id: merchant2.id)
+      item4 = Item.create(name: 'walking stick', description: 'for balance', unit_price: 87.91, merchant_id: merchant2.id)
+
+      expect(Item.find_items(id: item.id)).to eq(item)
+      expect(Item.find_items(name: 'ing')).to eq([item2, item3, item4])
+      expect(Item.find_items(description: 'for ')).to eq([item, item4])
+      expect(Item.find_items(unit_price: 87.91)).to eq([item, item4])
+      expect(Item.find_items(merchant_id: merchant2.id)).to eq([item3, item4])
+      expect(Item.find_items(created_at: item.created_at.to_s)).to eq([item, item2, item3, item4])
+      expect(Item.find_items(updated_at: item.updated_at.to_s)).to eq([item, item2, item3, item4])
     end
   end
 end
