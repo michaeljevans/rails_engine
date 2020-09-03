@@ -24,10 +24,10 @@ RSpec.describe 'Merchants API' do
   end
 
   it 'can return a merchant based on name search' do
-    create_list(:merchant, 9)
+    create_list(:merchant, 4)
     merchant = Merchant.last
 
-    get "/api/v1/merchants/find?name=#{merchant.name[1..5]}"
+    get "/api/v1/merchants/find?name=#{merchant.name}"
 
     expect(response).to be_successful
     expect(response.content_type).to eq('application/json')
