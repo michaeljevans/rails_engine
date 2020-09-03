@@ -22,4 +22,18 @@ class Merchant < ApplicationRecord
       by_updated_at(value).first
     end
   end
+
+  def self.find_merchants(search_param)
+    attribute = search_param.keys.first.to_s
+    value = search_param.values.first
+    if attribute == 'id'
+      by_id(value).first
+    elsif attribute == 'name'
+      by_name(value)
+    elsif attribute == 'created_at'
+      by_created_at(value)
+    else
+      by_updated_at(value)
+    end
+  end
 end
