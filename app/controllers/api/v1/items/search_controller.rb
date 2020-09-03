@@ -3,6 +3,10 @@ class Api::V1::Items::SearchController < ApplicationController
     render json: ItemSerializer.new(Item.find_item(search_param))
   end
 
+  def index
+    render json: ItemSerializer.new(Item.find_items(search_param))
+  end
+
   private
 
   def search_param
